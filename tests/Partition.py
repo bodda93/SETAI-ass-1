@@ -14,7 +14,7 @@ def main(onnx_path) -> pd.DataFrame:
     gender = "persoon_geslacht_vrouw"
 
 
-    data_path = "../data/investigation_train_large_checked.csv"
+    data_path = "data/investigation_train_large_checked.csv"
 
     print("Dataset:", data_path)
     print("ONNX model:", onnx_path)
@@ -84,5 +84,5 @@ def main(onnx_path) -> pd.DataFrame:
     
     print(pd.DataFrame(report).to_csv())
 
-onnx_path = "../bad_model_tmp.onnx"
+onnx_path = "model/bad_model_tmp.onnx"
 print(main(onnx_path))
