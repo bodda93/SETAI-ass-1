@@ -92,10 +92,9 @@ def main(onnx_path) -> pd.DataFrame:
     print(f"AFTER FLIP PR-AUC:   {prauc_flip:.4f}")
 
     print("\nDifferences (flip - baseline):")
-    print(f"dAccuracy: {acc_flip - acc_base:+.6f}")
-    print(f"dROC-AUC:  {roc_flip - roc_base:+.6f}")
-    print(f"dPR-AUC:   {pr_flip - pr_base:+.6f}")
-
+    print(f"Δ Accuracy: {acc_flip - acc_base:+.6f}")
+    print(f"Δ ROC-AUC:  {roc_flip - roc_base:+.6f}")
+    print(f"Δ PR-AUC:   {prauc_flip - prauc_base:+.6f}")
 
     # Delta analysis by original gender
     orig_gender = X_test[gender].values
