@@ -84,5 +84,5 @@ def main(onnx_path) -> pd.DataFrame:
     
     print(pd.DataFrame(report).to_csv())
 
-onnx_path = "model/bad_model_tmp.onnx"
+onnx_path = "model/good_model_tmp.onnx"
 print(main(onnx_path))
