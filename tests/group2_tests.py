@@ -6,9 +6,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, roc_auc_score, average_precision_score
 
 
-# -----------------------------
-# CONFIG
-# -----------------------------
 DATA_PATH = "data/investigation_train_large_checked.csv"
 ONNX_PATH = "model/good_model_tmp.onnx"   
 TARGET_COL = "checked"
@@ -99,22 +96,18 @@ def main(onnx_path: str = ONNX_PATH) -> None:
 
     y = df[TARGET_COL].astype(int).values
 
-    # Keep original interface: all features except target + possible label dummies
     X = df.drop(columns=[TARGET_COL, "Ja", "Nee"], errors="ignore")
 
-    # Ensure FLIP_COL is binary 0/1 (fails early if not)
     vals = pd.Series(X[FLIP_COL]).dropna().unique()
     if not set(np.array(vals, dtype=int)).issubset({0, 1}):
         raise ValueError(f"{FLIP_COL} is not binary 0/1. Unique values: {sorted(list(vals))[:20]}")
 
-    # Split only for evaluation (model already trained)
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE, stratify=y
     )
 
     session = ort.InferenceSession(onnx_path, providers=["CPUExecutionProvider"])
 
-    # Baseline inference
     X_test_np = X_test.astype(np.float32).values
     s_base = get_scores(session, X_test_np)
     yhat_base = (s_base >= THRESHOLD).astype(int)
@@ -152,7 +145,6 @@ def main(onnx_path: str = ONNX_PATH) -> None:
 
     rep = subgroup_report(s_base, s_flip, original_group, thr=THRESHOLD)
 
-    # Table printed in the same style as your screenshot
     print(rep.to_string(index=False))
     print()
     print(rep.to_string(index=False))
